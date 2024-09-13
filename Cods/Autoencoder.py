@@ -1,10 +1,10 @@
-import AutoEncoderModel as AM
-from Meters import AverageMeter
+from Cods.Meters import AverageMeter
 import torch.nn.functional as F
 import torch
+import Cods.AutoEncoderModel as AM
 
 
-class getModel():
+class getModel:
     def __init__(self, modelAddress, input_shape_image=512, latent_shape_image=128, input_shape_text=768, latent_shape_text=128, device='cpu'):
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         self.modelAddress = modelAddress

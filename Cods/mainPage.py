@@ -8,6 +8,10 @@ from pathlib import Path
 from Cods.preprossing.ImageEmbedding import ImageEmbeddingPipeline
 import random
 from Cods.preprossing.TextEmbbeding import  Preprocess
+from Cods.Autoencoder import getModel
+from Cods.VectorDatabase import VectorDatabase
+import torch
+import ast
 
 class WebApp:
     def __init__(self):
@@ -67,9 +71,11 @@ class WebApp:
             print(f"address : {self.current_image_path}")
             self.myImageEmbdding = ImageEmbeddingPipeline(listnames, "/static/uploads/")
             results = self.myImageEmbdding.run()
-            print(results)
+            model = getModel('Cods/models/AEModel.pth')
+            final_embedded = model.getOutputImageEncoder(torch.tensor([results[file.filename]]))
+            vec_db = VectorDatabase()
+            self.links = vec_db.findSimilarProducts(final_embedded)
 
-            self.links = self.generate_random_links()
 
             return RedirectResponse(url="/", status_code=303)
 
@@ -77,13 +83,16 @@ class WebApp:
         async def process_text(input_field: str = Form(...)):
             # Store the processed text
             self.current_text = input_field
-            parsbert_root = "/Users/rezamosavi/Documents/image-text/Cods/models/TextEmbedding"  # This path should be added to .gitignore
+            parsbert_root = "/Users/mohammad/Desktop/Projects/image-text/Cods/models/TextEmbedding"  # This path should be added to .gitignore
             p = Preprocess(parsbert_root)
             r = p.vectorize(self.current_text)
-            print(r)
-
+            r = ast.literal_eval(r)
+            print(torch.tensor(r).shape)
+            model = getModel('Cods/models/AEModel.pth')
+            final_embedded = model.getOutputTextEncoder(torch.tensor([r]))
+            vec_db = VectorDatabase()
+            self.links = vec_db.findSimilarProducts(final_embedded)
             # Update links randomly when text is submitted
-            self.links = self.generate_random_links()
 
             return RedirectResponse(url="/", status_code=303)
 

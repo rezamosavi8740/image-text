@@ -3,8 +3,11 @@ import numpy as np
 import pandas as pd
 import os
 
+from numpy.core.numeric import indices
+
+
 class VectorDatabase:
-    def __init__(self, vec_path='VectorDatabase/vector_index.faiss', data_path='VectorDatabase/search.csv'):
+    def __init__(self, vec_path='Cods/VectorDatabase/vector_index.faiss', data_path='Cods/VectorDatabase/search.csv'):
         self.vec_path = vec_path
         self.data_path = data_path
         self.index = self.loadVecDatabase()
@@ -24,15 +27,16 @@ class VectorDatabase:
             print('SearchDatabase does not exist')
             return None
 
-    def searchVecDatabase(self, embedded_vector):
-        query_embedding = embedded_vector.cpu().detach().numpy()
+    def searchVecDatabase(self, query_embedding):
         k = 1000  # Number of nearest neighbors to retrieve
         faiss.normalize_L2(query_embedding)
         distances, indices = self.index.search(query_embedding, k)
 
         return distances, indices
 
-    def findSimilarProducts(self, indices, limit=10):
+    def findSimilarProducts(self, embedded_vector, limit=10):
+        query_embedding = embedded_vector.cpu().detach().numpy()
+        _, indices = self.searchVecDatabase(query_embedding)
         finded = []
         for idx in indices[0]:
             find_link = self.search.loc[idx, 'product_link']

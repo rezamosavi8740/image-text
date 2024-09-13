@@ -1,4 +1,5 @@
 import torch.nn as nn
+import torch.nn.functional as F
 
 class MLP(nn.Module):
     def __init__(self, input_neurons, hidden_neurons, output_neurons, act_func, dropout_nums, dropout_prob=0.3, weight_init='random'):

@@ -1,14 +1,28 @@
 import AutoEncoderModel as AM
 from Meters import AverageMeter
+import torch.nn.functional as F
 import torch
 
 
 class getModel():
-    def __int__(self ,modelAddress = None ,device = None):
+    def __init__(self ,modelAddress ,input_shape_image=512 ,latent_shape_image=128 ,input_shape_text=768 ,latent_shape_text=128, modelType="Autoencoder" ,device=None):
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        self.model = AM.AutoEncoders(512, 128, 512, 768, 128, 768).to(device)
+        self.modelType = modelType
         self.modelAddress = modelAddress
+        self.input_shape_image = input_shape_image
+        self.latent_shape_image = latent_shape_image
+        self.input_shape_text = input_shape_text
+        self.latent_shape_text = latent_shape_text
+        self.defineModel()
         self.loadedModel = self.loadModel()
+
+    def defineModel(self):
+        if self.modelType == "imageEncoder":
+            self.model = AM.MLP(self.input_shape_image, [1024, 512, 256], self.latent_shape_image, F.relu, [1, 2], weight_init='He').to(self.device)
+        elif self.modelType == "textencoder":
+            AM.MLP(self.input_shape_text, [1024, 512, 256], self.latent_shape_text, F.relu, [1, 2], weight_init='He').to(self.device)
+        else:
+            self.model = AM.AutoEncoders(512, 128, 512, 768, 128, 768).to(self.device)
 
     def evaluateLoss(self , test_loader, loss_fn):
         self.loadedModel.eval()
@@ -36,6 +50,11 @@ class getModel():
     def loadModel(self):
         return torch.load(self.modelAddress)
 
-    def getOutput(self ,embeddingVector):
-        pass
+    def getOutputAotuEncoder(self ,embeddingVectorImage ,embeddingVectorText):
+        return self.loadedModel(embeddingVectorImage, embeddingVectorText)
 
+    def getOutputImageEncoder(self ,embeddingVector):
+        return self.loadedModel(embeddingVector)
+
+    def getOutputTextEncoder(self ,embeddingVector):
+        return self.loadedModel(embeddingVector)

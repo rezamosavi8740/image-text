@@ -27,7 +27,7 @@ def main():
 
     modelAddress = "models/AEModel.pth"
 
-    model= getModel(modelAddress)
+    model = getModel(modelAddress)
 
     print(model.getOutputImageEncoder(torch.tensor(results["product_image_5096.jpg"])))
 

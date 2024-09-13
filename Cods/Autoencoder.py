@@ -52,7 +52,6 @@ class getModel():
         return self.model(embeddingVectorImage.to(self.device), embeddingVectorText.to(self.device))
 
     def getOutputImageEncoder(self ,embeddingVector):
-
         return self.model.image_encoder(embeddingVector.to(self.device))
 
     def getOutputTextEncoder(self ,embeddingVector):

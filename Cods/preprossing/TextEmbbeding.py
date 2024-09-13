@@ -40,6 +40,8 @@ class ModelUtils :
         self.tokenizer_path = os.path.join(model_root, "tokenizer")
 
     def download_model (self) :
+        self.make_dirs()
+
         BASE_MODEL = "HooshvareLab/bert-fa-zwnj-base"
         tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL)
         model = AutoModel.from_pretrained(BASE_MODEL)

@@ -48,13 +48,18 @@ class getModel():
         return loss_eval.avg
 
     def loadModel(self):
-        return torch.load(self.modelAddress)
+        if self.device == 'cpu':
+            return torch.load(self.modelAddress, map_location=torch.device('cpu'))
+        else:
+            return torch.load(self.modelAddress, map_location=torch.device('cuda'))
 
     def getOutputAotuEncoder(self ,embeddingVectorImage ,embeddingVectorText):
-        return self.loadedModel(embeddingVectorImage, embeddingVectorText)
+        return self.loadedModel(embeddingVectorImage.to(self.device), embeddingVectorText.to(self.device))
 
     def getOutputImageEncoder(self ,embeddingVector):
-        return self.loadedModel(embeddingVector)
+
+        print(self.loadedModel)
+        return self.loadedModel(embeddingVector.to(self.device))
 
     def getOutputTextEncoder(self ,embeddingVector):
-        return self.loadedModel(embeddingVector)
+        return self.loadedModel(embeddingVector.to(self.device))

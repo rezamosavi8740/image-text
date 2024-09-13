@@ -5,6 +5,7 @@ import preprossing.ImageEmbedding as imb
 from datetime import datetime
 import preprossing.TextEmbbeding as textIM
 from Autoencoder import getModel
+from AutoEncoderModel import AutoEncoders ,MLP
 
 
 
@@ -22,14 +23,23 @@ def main():
     current_time2 = datetime.now()
     print(current_time2 -current_time1)
 
+    print(results["product_image_727.jpg"])
+
     modelAddress = "/Users/rezamosavi/Documents/image-text/Cods/models/AEModel.pt"
-    model= getModel(modelAddress ,modelType = "imageEncoder")
 
-    print(model.getOutputImageEncoder(results))
+    model= getModel(modelAddress ,modelType="imageEncoder")
 
+    print(model.getOutputImageEncoder(torch.tensor(results["product_image_727.jpg"])))
 
+    """
 
-
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    model = AutoEncoders(512, 128, 512, 768, 128, 768).to(device)
+    if device == 'cpu':
+        best_model = torch.load(modelAddress, map_location=torch.device('cpu'))
+    else:
+        best_model = torch.load(modelAddress)
+    """
 
     """
     modelu = textIM.ModelUtils('/Users/rezamosavi/Documents/image-text/Cods/models/')

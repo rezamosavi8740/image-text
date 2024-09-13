@@ -5,6 +5,7 @@ from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 from pathlib import Path
+from Cods.preprossing.ImageEmbedding import ImageEmbeddingPipeline
 import random
 
 class WebApp:
@@ -58,7 +59,16 @@ class WebApp:
                 f.write(await file.read())
 
             # Store the path for rendering
+            print(file.filename)
             self.current_image_path = f"/static/uploads/{file.filename}"
+            listnames = []
+            listnames.append(file.filename)
+            print(f"address : {self.current_image_path}")
+            self.myImageEmbdding = ImageEmbeddingPipeline(listnames, "/static/uploads/")
+            results = self.myImageEmbdding.run()
+            print(results)
+            #print(results[file.filename])
+
 
             # Update links randomly when an image is uploaded
             self.links = self.generate_random_links()

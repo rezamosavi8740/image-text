@@ -15,22 +15,21 @@ class ImageEmbeddingPipeline:
         self.model, self.preprocess = clip.load("ViT-B/32")
         self.model.to(self.device).eval()
 
-    def get_image_paths(self):
+    def get_image_paths(self,batch):
         """Converts input list of image filenames into full paths."""
-        return [
-            os.path.join(self.image_folder, img)
-            for img in self.input_list
-            if os.path.exists(os.path.join(self.image_folder, img))
-        ]
+        image_paths = []
+        for item in batch:
+            image_paths.append(self.image_folder + '/'+ item)
+        return image_paths
 
     def embed_images(self, img_paths):
         """Embeds the given list of image paths."""
         images = []
         for img_path in img_paths:
-            #print(img_path)
             try:
-                img = Image.open(self.image_folder+"/"+img_path).convert('RGB')
-                #print(img)
+                print(f"Embedding : {self.image_folder+img_path}")
+                img = Image.open("/Users/rezamosavi/Documents/image-text"+self.image_folder+img_path).convert('RGB')
+                print(img)
                 images.append(self.preprocess(img))
             except Exception as e:
                 print(f"Error loading image {img_path}: {e}")
@@ -43,7 +42,10 @@ class ImageEmbeddingPipeline:
 
     def process_batch(self, batch):
         """Processes a batch of image paths and returns a dictionary of embeddings and paths."""
-        img_paths = self.get_image_paths()
+        img_paths = self.get_image_paths(batch)
+        print(f"baths : {batch}")
+
+        print(f"img_paths : {img_paths}")
 
         if not img_paths:
             return {}

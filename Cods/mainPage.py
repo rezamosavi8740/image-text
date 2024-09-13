@@ -59,7 +59,7 @@ class WebApp:
                 f.write(await file.read())
 
             # Store the path for rendering
-            print(file.filename)
+
             self.current_image_path = f"/static/uploads/{file.filename}"
             listnames = []
             listnames.append(file.filename)
@@ -67,10 +67,7 @@ class WebApp:
             self.myImageEmbdding = ImageEmbeddingPipeline(listnames, "/static/uploads/")
             results = self.myImageEmbdding.run()
             print(results)
-            #print(results[file.filename])
 
-
-            # Update links randomly when an image is uploaded
             self.links = self.generate_random_links()
 
             return RedirectResponse(url="/", status_code=303)

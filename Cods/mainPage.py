@@ -7,6 +7,7 @@ from starlette.responses import RedirectResponse
 from pathlib import Path
 from Cods.preprossing.ImageEmbedding import ImageEmbeddingPipeline
 import random
+from Cods.preprossing.TextEmbbeding import  Preprocess
 
 class WebApp:
     def __init__(self):
@@ -59,7 +60,7 @@ class WebApp:
                 f.write(await file.read())
 
             # Store the path for rendering
-            print(file.filename)
+
             self.current_image_path = f"/static/uploads/{file.filename}"
             listnames = []
             listnames.append(file.filename)
@@ -67,10 +68,7 @@ class WebApp:
             self.myImageEmbdding = ImageEmbeddingPipeline(listnames, "/static/uploads/")
             results = self.myImageEmbdding.run()
             print(results)
-            #print(results[file.filename])
 
-
-            # Update links randomly when an image is uploaded
             self.links = self.generate_random_links()
 
             return RedirectResponse(url="/", status_code=303)
@@ -79,6 +77,10 @@ class WebApp:
         async def process_text(input_field: str = Form(...)):
             # Store the processed text
             self.current_text = input_field
+            parsbert_root = "/Users/rezamosavi/Documents/image-text/Cods/models/TextEmbedding"  # This path should be added to .gitignore
+            p = Preprocess(parsbert_root)
+            r = p.vectorize(self.current_text)
+            print(r)
 
             # Update links randomly when text is submitted
             self.links = self.generate_random_links()

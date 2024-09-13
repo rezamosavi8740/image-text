@@ -48,4 +48,5 @@ def main():
     p = textIM.Preprocess('/Users/rezamosavi/Documents/image-text/Cods/models/')
     """
 if __name__ == "__main__":
+
     main()

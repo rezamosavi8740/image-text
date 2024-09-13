@@ -1,0 +1,58 @@
+body {
+    background-color: #f4f7f6;
+    font-family: 'Arial', sans-serif;
+}
+
+h1 {
+    font-family: 'Georgia', serif;
+    color: #2c3e50;
+}
+
+.card {
+    border-radius: 15px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    color: #34495e;
+}
+
+.form-control-file,
+.form-control {
+    border-radius: 8px;
+}
+
+button {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mt-4 h3 {
+    font-family: 'Courier New', Courier, monospace;
+    color: #2980b9;
+}
+
+.custom-file-label::after {
+    content: "Browse";
+}
+
+.list-group-item a {
+    text-decoration: none;
+    color: #2980b9;
+}
+
+.list-group-item a:hover {
+    text-decoration: underline;
+}

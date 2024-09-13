@@ -1,5 +1,3 @@
-fastapi==0.108.0
-uvicorn==0.23.1
 pandas==2.0.3
 numpy==1.25.2
 torch==2.0.1
@@ -8,6 +6,11 @@ ftfy==6.1.1
 regex==2023.6.3
 tqdm==4.65.0
 git+https://github.com/openai/CLIP.git
-Pillow==10.0.1  # PIL comes under Pillow in PyPI
-scikit-learn==1.3.0  # sklearn is actually scikit-learn
-transformers==4.31.0  # Or use the version you prefer
+Pillow==10.0.1
+scikit-learn==1.3.0
+transformers==4.31.0
+flask
+fastapi
+uvicorn
+jinja2
+python-multipart

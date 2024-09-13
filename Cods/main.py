@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import torch
 import preprossing.ImageEmbedding as imb
-from datetime import datetime
+import time
 import preprossing.TextEmbbeding as textIM
 from Autoencoder import getModel
 from AutoEncoderModel import AutoEncoders ,MLP
@@ -13,23 +13,23 @@ def main():
 
     #test image :
 
-    imagelist = ["product_image_727.jpg"]
-    image_folder = '/Users/rezamosavi/Desktop/images-data/tee-shirt/product_images-crawled_data-tee-shirts1000,1200/'
-    current_time1 = datetime.now()
+    imagelist = ["product_image_5096.jpg"]
+    image_folder = '/Users/mohammad/Downloads/drive-download-20240912T155737Z-001/'
+    current_time1 = time.time()
 
     pipeline = imb.ImageEmbeddingPipeline(imagelist, image_folder)
     results = pipeline.run()
 
-    current_time2 = datetime.now()
+    current_time2 = time.time()
     print(current_time2 -current_time1)
 
-    print(results["product_image_727.jpg"])
+    print(results["product_image_5096.jpg"])
 
-    modelAddress = "/Users/rezamosavi/Documents/image-text/Cods/models/AEModel.pt"
+    modelAddress = "models/AEModel.pth"
 
-    model= getModel(modelAddress ,modelType="imageEncoder")
+    model= getModel(modelAddress)
 
-    print(model.getOutputImageEncoder(torch.tensor(results["product_image_727.jpg"])))
+    print(model.getOutputImageEncoder(torch.tensor(results["product_image_5096.jpg"])))
 
     """
 

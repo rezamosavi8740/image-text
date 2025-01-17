@@ -14,4 +14,4 @@ fastapi
 uvicorn
 jinja2
 python-multipart
-faiss
+faiss-cpu

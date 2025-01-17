@@ -14,11 +14,14 @@
             border-radius: 5px;
             padding: 15px;
             text-align: center;
-            word-wrap: break-word;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .link-box a {
             text-decoration: none;
             color: #007bff;
+            font-weight: bold;
+            font-size: 1.2rem;
         }
         .link-box a:hover {
             text-decoration: underline;
@@ -80,7 +83,7 @@
                 {% for link in links %}
                 <div class="col-md-4 mb-4">
                     <div class="link-box">
-                        <a href="{{ link }}" target="_blank">{{ link }}</a>
+                        <a href="{{ link }}" target="_blank">محصول {{ loop.index }}</a>
                     </div>
                 </div>
                 {% endfor %}

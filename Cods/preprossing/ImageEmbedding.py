@@ -28,7 +28,7 @@ class ImageEmbeddingPipeline:
         for img_path in img_paths:
             try:
                 print(f"Embedding : {self.image_folder+img_path}")
-                img = Image.open('/Users/mohammad/Desktop/Projects/image-text'+self.image_folder+img_path).convert('RGB')
+                img = Image.open('./'+self.image_folder+img_path).convert('RGB')
                 print(img)
                 images.append(self.preprocess(img))
             except Exception as e:

@@ -33,7 +33,7 @@ class WebApp:
         self.current_text = None
 
         # Links to display (initial)
-        self.links = ["https://fastapi.tiangolo.com", "https://python.org"]
+        self.links = None
 
         # Set up routes
         self.setup_routes()
@@ -72,9 +72,13 @@ class WebApp:
             self.myImageEmbdding = ImageEmbeddingPipeline(listnames, "/static/uploads/")
             results = self.myImageEmbdding.run()
             model = getModel('Cods/models/AEModel.pth')
+            print(torch.tensor([results[file.filename]]).shape)
             final_embedded = model.getOutputImageEncoder(torch.tensor([results[file.filename]]))
+            print(final_embedded)
+            self.links = None
             vec_db = VectorDatabase()
             self.links = vec_db.findSimilarProducts(final_embedded)
+            print(self.links)
 
 
             return RedirectResponse(url="/", status_code=303)
@@ -83,15 +87,18 @@ class WebApp:
         async def process_text(input_field: str = Form(...)):
             # Store the processed text
             self.current_text = input_field
-            parsbert_root = "/Users/mohammad/Desktop/Projects/image-text/Cods/models/TextEmbedding"  # This path should be added to .gitignore
+            parsbert_root = "Cods/models/TextEmbedding"  # This path should be added to .gitignore
             p = Preprocess(parsbert_root)
             r = p.vectorize(self.current_text)
             r = ast.literal_eval(r)
             print(torch.tensor(r).shape)
             model = getModel('Cods/models/AEModel.pth')
             final_embedded = model.getOutputTextEncoder(torch.tensor([r]))
+            self.links = None
             vec_db = VectorDatabase()
             self.links = vec_db.findSimilarProducts(final_embedded)
+            print(self.links)
+
             # Update links randomly when text is submitted
 
             return RedirectResponse(url="/", status_code=303)

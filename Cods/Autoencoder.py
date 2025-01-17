@@ -15,6 +15,7 @@ class getModel:
         self.model = None
         self.defineModel()
         self.loadModel()
+        self.model.eval()
 
     def defineModel(self):
         self.model = AM.AutoEncoders(self.input_shape_image, self.latent_shape_image, self.input_shape_image, self.input_shape_text, self.latent_shape_text, self.input_shape_text).to(self.device)
